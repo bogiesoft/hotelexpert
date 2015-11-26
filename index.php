@@ -179,9 +179,9 @@ if (defined('ENVIRONMENT'))
   
    if($host_name=='localhost')
    { 
-  		define('WEB_URL','http://'.$_SERVER['HTTP_HOST'].'/hotels/index.php/');
-		define('WEB_DIR','http://'.$_SERVER['HTTP_HOST'].'/hotels/');
-		define('WEB_DIR_FRONT','http://'.$_SERVER['HTTP_HOST'].'/hotels/');
+  		define('WEB_URL','http://'.$_SERVER['HTTP_HOST'].'/hotelexpert/index.php/');
+		define('WEB_DIR','http://'.$_SERVER['HTTP_HOST'].'/hotelexpert/');
+		define('WEB_DIR_FRONT','http://'.$_SERVER['HTTP_HOST'].'/hotelexpert/');
    }
    else
    {
