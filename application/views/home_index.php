@@ -185,7 +185,7 @@
 					<input type="hidden" id="testid" value="" style="font-size: 10px; width: 20px; z-index:99999; position:absolute;" disabled="disabled"  />
 				
 					<input class="text1_slider"  type="text" name="city_name" onblur="fetch_city();" placeholder="Where would you like to go?" id="testinput" required />
-					<input type="text"  name="sd" id="sdate" name="datefrom" value="Check In" class="datepicker">
+					<input type="text"  name="sd" id="sdate"  value="Check In" class="datepicker">
 					<input type="text" id="edate" name="ed" value="Check Out" class="datepicker">
 					
 					<div class="select-wrapper">

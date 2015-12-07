@@ -31,6 +31,15 @@ class Hotel extends CI_Controller {
 	    $_SESSION['ses_id'] = $sec_res;
 		$this->load->view('home_index');
 	}
+	
+	public function hotel_details($hote_id){
+		$data['HotelDetails'] =  $this->Hotel_Model->GetHotelDetails($hote_id);
+		$data['room_details'] =  $this->Hotel_Model->GetRoomDetails($hote_id);
+		$data['photos'] = $this->Hotel_Model->GetHotelImages($hote_id);
+		$data['facilities'] = $this->Hotel_Model->GetHotelFacilities($hote_id);
+		$this->load->view('hotel/hotel_details',$data);
+	}
+	
 	public function search_city()
 	{
 		$q = strtolower($_GET["q"]);
@@ -140,10 +149,10 @@ class Hotel extends CI_Controller {
 			$this->form_validation->set_rules('ed', 'CheckOut', 'required');
 			$this->form_validation->set_rules('no_of_rooms', 'Rooms', 'required');
 		
-		if($this->form_validation->run()==FALSE)
-		{
-   			redirect('hotel/index','refresh');
-		}
+			if($this->form_validation->run()==FALSE)
+			{
+				redirect('hotel/index','refresh');
+			}
 		} else if(isset($_POST['search_form']) && $_POST['search_form']!='')
 		{
 			$this->form_validation->set_rules('city_name', 'City Name', 'required');
@@ -167,28 +176,7 @@ class Hotel extends CI_Controller {
 		$cityVal = $this->Hotel_Model->get_city_code($city_name_new);
 		if(isset($cityVal))
 		{
-			if(isset($_SESSION['city']))
-			{	
-				if($_SESSION['city'] == $cityVal && $_SESSION['sd'] == $sd && $_SESSION['ed'] == $ed && $_SESSION['no_of_rooms'] == $no_of_rooms)
-				{
-					$_SESSION['hashing_activate'] = 1;
-				}
-				else
-				{
-					
-					$_SESSION['hashing_activate'] = '';
-					$_SESSION['fav_hotel_detail']='';
-					$this->Hotel_Model->delete_gta_temp_result($_SESSION['ses_id']);
-					//$this->Hotel_Model->delete_gta_temp_result1();
-					
-				}
-			}
-			else
-			{
-				$_SESSION['hashing_activate'] = '';
-				$this->Hotel_Model->delete_gta_temp_result($_SESSION['ses_id']);
-				//$this->Hotel_Model->delete_gta_temp_result1();
-			}
+		
 			$_SESSION['supplier_type'] = $supplier_type;
 			$_SESSION['city_name']= $city_name;
 			$_SESSION['city'] = $cityVal;
@@ -205,9 +193,8 @@ class Hotel extends CI_Controller {
 			$days  = intval($diff / 24);
 			$_SESSION['days']=$days;
 			
-			$api_r=array();
-			$api = $this->Hotel_Model->api_status_id();
-			$data['api_fs'] = $api['0']->api_name;
+			$data['hotels'] = $this->Hotel_Model->SearchResult($cityVal,$sd,$ed,$no_of_rooms);
+			//print_r($data['hotels']);
 			$this->load->view('hotel/search_result',$data);
 			
 		} else {

@@ -2,6 +2,73 @@
 
 class Hotel_model extends CI_Model {
 		
+	function SearchResult($city,$sd,$ed,$room){
+	$sd = explode("-",$sd);
+	$sd = $sd[2]."-".$sd[1]."-".$sd[0];
+	$ed= explode("-",$ed);
+	$ed = $ed[2]."-".$ed[1]."-".$ed[0];
+		$sql = "SELECT *  FROM `sup_hotels` as sh left join sup_hotel_room_details as shrd on sh.`sup_hotel_id` = shrd.`sup_hotel_id` left join sup_hotel_room_period_details as shrp on shrd.sup_room_details_id = shrp.sup_room_details_id left join sup_room_maintain_month as shrm on shrp.sup_hotel_room_period_details_id = shrm.sup_hotel_room_period_details_id where sh.`city_name` = '".$city."' and shrp.room_avail_date_from >= '".$sd."'  and shrp.room_avail_date_to >='".$ed."' and shrm.avilable_rooms >= '".$room."' group by sh.sup_hotel_id";
+		
+		$query = $this->db->query($sql);
+		
+		if ($query->num_rows > 0 ) {
+		
+			return $query->result();
+		}else{
+			return "";
+		}	
+		
+	}
+	
+	public function GetRoomDetails($id){
+		$sql = "SELECT *  FROM `sup_hotels` as sh left join sup_hotel_room_details as shrd on sh.`sup_hotel_id` = shrd.`sup_hotel_id` left join sup_hotel_room_period_details as shrp on shrd.sup_room_details_id = shrp.sup_room_details_id left join sup_room_maintain_month as shrm on shrp.sup_hotel_room_period_details_id = shrm.sup_hotel_room_period_details_id where sh.sup_hotel_id =".$id." ";
+		
+		$query = $this->db->query($sql);
+		
+		if ($query->num_rows > 0 ) {
+		
+			return $query->result_array();
+		}else{
+			return "";
+		}	
+	}
+	
+	public function GetHotelDetails($id){
+		$sql = "SELECT *  FROM `sup_hotels` where sup_hotel_id =".$id." ";
+		$query = $this->db->query($sql);
+		
+		if ($query->num_rows > 0 ) {
+		
+			return $query->result_array();
+		}else{
+			return "";
+		}	
+	}
+	
+	public function GetHotelImages($id){
+		$sql = "SELECT *  FROM `sup_hotel_images` where sup_hotel_id =".$id." ";
+		$query = $this->db->query($sql);
+		
+		if ($query->num_rows > 0 ) {
+		
+			return $query->result_array();
+		}else{
+			return "";
+		}	
+	}
+	
+	public function GetHotelFacilities($id){
+		$sql = "SELECT *  FROM `sup_hotel_facilities` left join global_amenity_list on  sup_hotel_facilities.amenity_list_id = global_amenity_list.amenity_list_id where sup_hotel_facilities.sup_hotel_id =".$id." ";
+		$query = $this->db->query($sql);
+		
+		if ($query->num_rows > 0 ) {
+		
+			return $query->result_array();
+		}else{
+			return "";
+		}	
+	}
+	
 	public function get_city_code($city_name_new)
 	{
 		 $this->db->select('*');
